@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.diabatix.com/coldstream">
-    <img src="logo.jpg" alt="pyColdStream logo" width="200">
+    <img src="images/logo.jpg" alt="pyColdStream logo" width="200">
   </a>
 </p>
 
@@ -32,5 +32,5 @@ pprint(new_project.data)
 ```
 
 ## Additional resources
-<a href="https://coldstream.readme.io/reference">API documentation</a>
+<a href="https://coldstream.readme.io/reference">API documentation</a><br>
 <a href="https://www.diabatix.com">Visit our website</a>
