@@ -1,10 +1,7 @@
-![pyColdStream Logo](images/logo.png)
-
-<p align="center">
-  <img src="images/logo.png" alt="pyColdStream Logo" width="200">
-</p>
-
 # pyColdStream
+<p align="center">
+  <img src="images/logo.png" alt="pyColdStream Logo" width="500">
+</p>
 
 The pyColdStream library provides a simple and convenient way to interact with Diabatix's ColdStream using Python. It is based on the official REST API of ColdStream. This library can be used to automate tasks, integrate with other tools and systems, and build custom applications that interact with ColdStream. Overall, it is a convenient way to access the full range of functionality offered by the ColdStream REST API.
 
