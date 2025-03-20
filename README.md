@@ -1,10 +1,8 @@
-<p align="center">
-  <a href="https://www.diabatix.com/coldstream">
-    <img src="images/logo.jpg" alt="pyColdStream logo" width="200">
-  </a>
-</p>
-
 ![pyColdStream Logo](images/logo.png)
+
+<p align="center">
+  <img src="images/logo.png" alt="pyColdStream Logo" width="200">
+</p>
 
 # pyColdStream
 
