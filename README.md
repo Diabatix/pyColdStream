@@ -1,9 +1,12 @@
+<p align="center">
+  <a href="https://www.diabatix.com/coldstream">
+    <img src="logo.jpg" alt="pyColdStream logo" width="200">
+  </a>
+</p>
+
 # pyColdStream
 
 The pyColdStream library provides a simple and convenient way to interact with Diabatix's ColdStream using Python. It is based on the official REST API of ColdStream. This library can be used to automate tasks, integrate with other tools and systems, and build custom applications that interact with ColdStream. Overall, it is a convenient way to access the full range of functionality offered by the ColdStream REST API.
-
-## Documentation
-<insert link to documentation>
 
 ## How to install?
 From Pypi
@@ -27,3 +30,7 @@ new_project = session.projects.create_project("Project Name", "This is the proje
 
 pprint(new_project.data)
 ```
+
+## Additional resources
+<a href="https://coldstream.readme.io/reference">API documentation</a>
+<a href="https://www.diabatix.com">Visit our website</a>
