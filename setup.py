@@ -1,7 +1,13 @@
+#-------------------------------------------------------------------------------#
+#
+#                         --- p y C o l d S t r e a m ---
+#
+#-------------------------------------------------------------------------------#
+
 import os
 from setuptools import setup, find_packages
 
-with open(os.path.join("coldstream", "VERSION")) as file:
+with open(os.path.join("pycoldstream", "VERSION")) as file:
     version = file.read().strip()
 
 def read_requirements():
@@ -14,10 +20,10 @@ setup(
     license="MIT License",
     version=version,
     author="Diabatix nv",
-    keywords="diabatix coldstream api",
-    packages=find_packages(include=["coldstream"]),
+    keywords="diabatix coldstream python api wrapper",
+    packages=find_packages(include=["pycoldstream"]),
     install_requires=read_requirements(),
-    url="https://github.com/diabatix/coldstream",
+    url="https://github.com/diabatix/pycoldstream",
     classifiers=[
         "Programming Language :: Python",
         "Operating System :: OS Independent",
