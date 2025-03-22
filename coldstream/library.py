@@ -1,11 +1,11 @@
 #-------------------------------------------------------------------------------#
 #
-#                         --- C O L D S T R E A M api ---
+#                         --- p y C o l d S t r e a m ---
 #
 #-------------------------------------------------------------------------------#
 
 import logging
-from .rest_api import ColdStreamRestClient, ColdStreamDataObject
+from rest_api import ColdStreamRestClient, ColdStreamDataObject
 
 log = logging.getLogger(__name__)
 
@@ -140,7 +140,7 @@ class LibraryItem(ColdStreamDataObject):
         if description is not None:
             payload["description"] = description
 
-        super.update(payload)
+        super().update(payload)
 
     ## Returns the activity history for the requested library item
     #
