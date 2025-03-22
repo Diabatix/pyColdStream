@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------#
 #
-#                         --- C O L D S T R E A M api ---
+#                         --- p y C o l d S t r e a m ---
 #
 #-------------------------------------------------------------------------------#
 
@@ -144,7 +144,7 @@ class Case(ColdStreamDataObject):
     #
     # @return (Interface)
     def create_interface(self, region1_ID, region2_ID):
-        url = self.URL["interfaces"] + "/interfaces"
+        url = self.URL["cases"] + "/interfaces"
         payload = {"caseId" : self.ID,
                    "firstRegionId" : region1_ID,
                    "secondRegionId" : region2_ID}
@@ -241,11 +241,11 @@ class Case(ColdStreamDataObject):
         if iteration is not None and self.case_type != 1:
             url += "?iteration=" + str(iteration)
 
-        return CaseResult(self.request_get(url))
+        return CaseResults(self.request_get(url))
 
     ## Retrieves the case results evolution graph for a given case
     def get_results_evolution_graph(self):
-        url = self.instance_url + "/results/evolution-graph" 
+        url = self.instance_url + "/results/evolution-graph"
 
         return CaseResults(self.request_get(url))
 
@@ -281,7 +281,7 @@ class Case(ColdStreamDataObject):
     #
     # @param filepath: path to the file
     def upload_geometry_file(self, filepath):
-        url_data = self.get_signed_url(filepath, self.__case_ID, self.ID)
+        url_data = self.get_signed_url(filepath, self.ID, self.ID)
         self.upload_file(filepath, url_data.get("preSignedUrl"))
 
         url = self.URL["cases"] + "/jobs/initialize"
@@ -298,7 +298,7 @@ class Case(ColdStreamDataObject):
         if file_ID is None and key is None:
             raise ApiError("file_ID and key cannot be simultaneously None")
 
-        url = self.URL["fileserver"] + "/cases/" + str(case_ID) + "/files/"
+        url = self.URL["fileserver"] + "/cases/" + str(self.ID) + "/files/"
 
         if file_ID is not None:
             url += str(file_ID)
@@ -332,7 +332,7 @@ class Region(ColdStreamDataObject):
     # @return (list of Subregoin)
     @property
     def subregions(self):
-        return [Subregion(self.token, s_data, self.__case_ID) for s_data in self.data["subregions"]]
+        return [SubRegion(self.token, s_data, self.__case_ID) for s_data in self.data["subregions"]]
 
     ## @end_attributes
 
@@ -357,7 +357,7 @@ class Region(ColdStreamDataObject):
     #
     # @return (dict)
     def update(self, name, region_type, data=None):
-        super.update({"name" : name,
+        super().update({"name" : name,
                       "type" : region_type,
                       "data" : data if data is not None else {}})
 
@@ -373,7 +373,7 @@ class Region(ColdStreamDataObject):
         payload = {"name" : name,
                    "regionId" : self.ID,
                    "caseId": self.__case_ID}
-        return Subregion(self.token, self.request_post(url, payload), self.__case_ID)
+        return SubRegion(self.token, self.request_post(url, payload), self.__case_ID)
 
     ## Retrieves the subregion for the given subregion ID
     #
@@ -413,7 +413,7 @@ class Region(ColdStreamDataObject):
         self.upload_file(filepath, url_data.get("preSignedUrl"))
 
         if os.path.splitext(filepath)[1] != ".stl":
-            self.create_visualization(self.__case_ID, url.get("id"), url.get("fileUrl"))
+            self.create_visualization(self.__case_ID, url_data.get("id"), url_data.get("fileUrl"))
 
 #-------------------------------------------------------------------------------#
 
@@ -464,7 +464,7 @@ class SubRegion(ColdStreamDataObject):
         self.upload_file(filepath, url_data.get("preSignedUrl"))
 
         if os.path.splitext(filepath)[1] != ".stl":
-            self.create_visualization(self.__case_ID, url.get("id"), url.get("fileUrl"))
+            self.create_visualization(self.__case_ID, url_data.get("id"), url_data.get("fileUrl"))
 
 #-------------------------------------------------------------------------------#
 
@@ -513,7 +513,7 @@ class Boundary(ColdStreamDataObject):
         self.upload_file(filepath, url_data.get("preSignedUrl"))
 
         if os.path.splitext(filepath)[1] != ".stl":
-            self.create_visualization(self.__case_ID, url.get("id"), url.get("fileUrl"))
+            self.create_visualization(self.__case_ID, url_data.get("id"), url_data.get("fileUrl"))
 
 #-------------------------------------------------------------------------------#
 

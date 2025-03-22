@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------#
 #
-#                         --- C O L D S T R E A M api ---
+#                         --- p y C o l d S t r e a m ---
 #
 #-------------------------------------------------------------------------------#
 
@@ -137,7 +137,7 @@ class Project(ColdStreamDataObject):
     # @param name (str): the project name
     # @param descr (str): the project description
     def update(self, name, descr):
-        super.update({"name" : name, "description" : descr})
+        super().update({"name" : name, "description" : descr})
 
     ## Open the project if it is closed
     def close(self):

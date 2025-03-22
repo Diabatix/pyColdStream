@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------#
 #
-#                         --- C O L D S T R E A M api ---
+#                         --- p y C o l d S t r e a m ---
 #
 #-------------------------------------------------------------------------------#
 
@@ -9,6 +9,7 @@ import secrets
 import requests
 import json
 import time
+import os
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 log = logging.getLogger(__name__)
@@ -26,10 +27,11 @@ _HOST = None
 def set_hosting(host):
     global _HOST
 
-    if host not in ["ap1", "eu1", "us1"]:
+    if host in ["ap1", "eu1", "us1"]:
+        _HOST = f"{host}.coldstream" 
+    else:
         log.error("Unknown hosting location! Valid options are ['ap1', 'eu1', 'us1'].")
-
-    _HOST = host
+        _HOST = host
 
                  #-----------------------------------------------#
                  #                    ColdstreamRestClient
@@ -106,13 +108,16 @@ class ColdStreamRestClient:
 
                 while(True):
                     mfa_code = input("Enter MFA Code:")
-                    pyload = {"otp" : mfa_code,
-                              "mfaToken" : mfa_token}
+                    payload = json.dumps({"otp" : mfa_code,
+                                          "mfaToken" : mfa_token})
+
                     response = self._response_handler(requests.post(
                         url_req,
                         headers=headers,
                         data=payload
                     ))
+                    if response and "accessToken" in response:
+                        break
 
             self.__token = response["accessToken"]
 
@@ -225,7 +230,7 @@ class ColdStreamRestClient:
             "Authorization": f"Bearer {self.token}"
         }
         return self._response_handler(requests.put(
-            url,
+            presigned_url,
             data=file_data,
             headers=headers
         ))
@@ -335,7 +340,6 @@ class ColdStreamDataObject(ColdStreamRestClient):
                 log.info("A job is already running, retrying in 2s")
                 time.sleep(2)
                 return self.create_visualization(case_ID, file_ID, file_url)
-
             else:
                 raise ApiError(reason="File upload failed")
 
