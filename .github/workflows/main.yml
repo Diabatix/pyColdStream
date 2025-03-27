@@ -35,8 +35,10 @@ jobs:
         git filter-repo --path tests --invert-paths --force
 
     - name: Clone Public Repo
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
-        git clone https://github.com/Diabatix/pyColdStream.git public-repo
+        git clone https://${{ secrets.PAT_TOKEN }}@github.com/Diabatix/pyColdStream.git public-repo
         cd public-repo
         git checkout main
 
