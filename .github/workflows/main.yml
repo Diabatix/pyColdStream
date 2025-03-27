@@ -13,7 +13,6 @@ jobs:
     - name: Checkout private repository
       uses: actions/checkout@v2
       with:
-        repository: ${{ github.repository }}
         token: ${{ secrets.PAT_TOKEN }}
 
     - name: Setup Git
@@ -23,13 +22,14 @@ jobs:
 
     - name: Copy files to sync
       run: |
-        mkdir sync
+        mkdir -p sync
         rsync -av --progress . sync --exclude '.github/workflows' --exclude 'tests'
 
     - name: Push to public repository
       run: |
         cd sync
         git init
+        git remote remove origin || true
         git remote add origin https://github.com/Diabatix/pyColdStream.git
         git add .
         git commit -m "Sync from private repository"
