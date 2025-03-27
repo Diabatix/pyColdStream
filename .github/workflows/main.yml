@@ -1,4 +1,4 @@
-name: Sync
+name: Sync to Public Repo
 
 on:
   push:
@@ -34,6 +34,12 @@ jobs:
       run: |
         git filter-repo --path tests --invert-paths --force
 
+    - name: Get Last Commit Message
+      id: get_commit_msg
+      run: |
+        LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+        echo "last_commit_msg=$LAST_COMMIT_MSG" >> $GITHUB_ENV
+
     - name: Clone Public Repo
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
@@ -49,7 +55,7 @@ jobs:
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
         git add .
-        git commit -m "Sync changes from private repo"
+        git commit -m "${{ env.last_commit_msg }}"
         git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
