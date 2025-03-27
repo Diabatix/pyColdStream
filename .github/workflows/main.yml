@@ -3,7 +3,7 @@ name: Sync Changes to Public Repository
 on:
   push:
     branches:
-      - master  # Trigger the workflow on push to master branch
+      - master  # Trigger the workflow on push to the master branch
 
 jobs:
   sync:
@@ -33,6 +33,7 @@ jobs:
         git remote add origin https://github.com/Diabatix/pyColdStream.git
         git add .
         git commit -m "Initial commit with cleaned content"
-        git push -u origin main --force
+        git branch -M main  # Rename the branch to main
+        git push -u origin main --force  # Push to main branch
       env:
         PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
