@@ -1,39 +1,39 @@
-name: Sync Changes to Public Repository
+name: Sync to Public Repo
 
 on:
   push:
     branches:
-      - master  # Trigger the workflow on push to the master branch
+      - master
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout private repository
+    - name: Checkout Private Repo
       uses: actions/checkout@v2
       with:
-        token: ${{ secrets.PAT_TOKEN }}
+        repository: ${{ github.repository }}
+        token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        fetch-depth: 0 # Fetch all history for all branches and tags
 
-    - name: Setup Git
+    - name: Filter out folders
       run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git filter-repo --path .github/workflows --invert-paths
+        git filter-repo --path tests --invert-paths
 
-    - name: Copy files to sync
+    - name: Clone Public Repo
       run: |
-        mkdir -p sync
-        rsync -av --progress . sync --exclude '.github/workflows' --exclude 'tests'
+        git clone https://github.com/your-org/public-repo.git public-repo
+        cd public-repo
+        git checkout main
 
-    - name: Initialize clean repository
+    - name: Sync to Public Repo
       run: |
-        cd sync
-        git init
-        git remote remove origin || true  # Remove existing remote if it exists
-        git remote add origin https://github.com/Diabatix/pyColdStream.git
+        rsync -av --exclude='.github/workflows' --exclude='tests' ./ public-repo/
+        cd public-repo
         git add .
-        git commit -m "Initial commit with cleaned content"
-        git branch -M main  # Rename the branch to main
-        git push -u origin main --force  # Push to main branch
+        git commit -m "Sync changes from private repo"
+        git push origin main
       env:
-        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
