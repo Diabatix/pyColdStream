@@ -33,8 +33,7 @@ jobs:
         git remote add origin https://github.com/Diabatix/pyColdStream.git
         git add .
         git commit -m "Sync from private repository"
-        git fetch origin master || true  # Fetch master branch if it exists
-        git rebase origin/master || true  # Rebase if master branch exists
-        git push -f origin master  # Force push to handle initial push
+        git branch -M main
+        git push -u origin main --force
       env:
         PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
