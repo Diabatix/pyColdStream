@@ -46,6 +46,9 @@ jobs:
       run: |
         rsync -av --exclude='.github/workflows' --exclude='tests' ./ public-repo/
         cd public-repo
+        git rm --cached -r .github/workflows tests || true
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
         git add .
         git commit -m "Sync changes from private repo"
         git push origin main
