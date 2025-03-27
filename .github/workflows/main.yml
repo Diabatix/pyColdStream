@@ -44,9 +44,8 @@ jobs:
 
     - name: Sync to Public Repo
       run: |
-        rsync -av --exclude='.github/workflows' --exclude='tests' ./ public-repo/
+        rsync -av --exclude='.git' --exclude='.github/workflows' --exclude='tests' ./ public-repo/
         cd public-repo
-        git rm --cached -r .github/workflows tests || true
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
         git add .
