@@ -13,9 +13,18 @@ jobs:
     - name: Checkout Private Repo
       uses: actions/checkout@v2
       with:
-        repository: ${{ github.repository }}
-        token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        repository: Diabatix/pyColdStreamDev
+        token: ${{ secrets.PAT_TOKEN }}
         fetch-depth: 0 # Fetch all history for all branches and tags
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install git-filter-repo
+      run: |
+        pip install git-filter-repo
 
     - name: Filter out folders
       run: |
@@ -24,7 +33,7 @@ jobs:
 
     - name: Clone Public Repo
       run: |
-        git clone https://github.com/your-org/public-repo.git public-repo
+        git clone https://github.com/Diabatix/pyColdStream.git public-repo
         cd public-repo
         git checkout main
 
@@ -36,4 +45,4 @@ jobs:
         git commit -m "Sync changes from private repo"
         git push origin main
       env:
-        GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
