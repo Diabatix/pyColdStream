@@ -29,6 +29,7 @@ jobs:
       run: |
         cd sync
         git init
+        git remote remove origin || true  # Remove existing remote if it exists
         git remote add origin https://github.com/Diabatix/pyColdStream.git
         git add .
         git commit -m "Initial commit with cleaned content"
