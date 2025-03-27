@@ -12,3 +12,5 @@ session = ColdstreamSession.create_from_login(user="admin@admin.com",
 
 P = session.projects.get_project(ID=12345)
 C = P.create_case(Case.CASE_TYPES["Simulation"], "Demo simulation")
+
+
