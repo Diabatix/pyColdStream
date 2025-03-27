@@ -16,9 +16,23 @@ jobs:
         repository: ${{ github.repository }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Push changes to public repository
+    - name: Setup Git
       run: |
-        git remote add public_repo https://github.com/Diabatix/pyColdStream.git
-        git push public_repo master
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+    - name: Copy files to sync
+      run: |
+        mkdir sync
+        rsync -av --progress . sync --exclude '.github/workflows' --exclude 'tests'
+
+    - name: Push to public repository
+      run: |
+        cd sync
+        git init
+        git remote add origin https://github.com/Diabatix/pyColdStream.git
+        git add .
+        git commit -m "Sync from private repository"
+        git push -f origin master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
