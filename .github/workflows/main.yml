@@ -1,0 +1,24 @@
+name: Sync Changes to Public Repository
+
+on:
+  push:
+    branches:
+      - master  # Trigger the workflow on push to master branch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout private repository
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.repository }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push changes to public repository
+      run: |
+        git remote add public_repo https://github.com/Diabatix/pyColdStream.git
+        git push public_repo master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
