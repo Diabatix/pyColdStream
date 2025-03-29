@@ -30,6 +30,10 @@ jobs:
       run: |
         git filter-repo --path .github/workflows --invert-paths --force
 
+    - name: Filter out examples folder
+      run: |
+        git filter-repo --path examples --invert-paths --force
+
     - name: Filter out tests folder
       run: |
         git filter-repo --path tests --invert-paths --force
@@ -38,24 +42,17 @@ jobs:
       id: get_commit_msg
       run: |
         LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
-        echo "last_commit_msg=$LAST_COMMIT_MSG" >> $GITHUB_ENV
+        CLEAN_COMMIT_MSG=$(echo "$LAST_COMMIT_MSG" | tr -d '\n')
+        echo "last_commit_msg=$CLEAN_COMMIT_MSG" >> $GITHUB_ENV
 
-    - name: Clone Public Repo
+    - name: Configure Git
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+
+    - name: Push Changes to Public Repo
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
-        git clone https://${{ secrets.PAT_TOKEN }}@github.com/Diabatix/pyColdStream.git public-repo
-        cd public-repo
-        git checkout main
-
-    - name: Sync to Public Repo
-      run: |
-        rsync -av --exclude='.git' --exclude='.github/workflows' --exclude='tests' ./ public-repo/
-        cd public-repo
-        git config user.name "GitHub Action"
-        git config user.email "action@github.com"
-        git add .
-        git commit -m "${{ env.last_commit_msg }}"
-        git push origin main
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        git remote add public-repo https://${{ secrets.PAT_TOKEN }}@github.com/Diabatix/pyColdStream.git
+        git push public-repo HEAD:main --force
