@@ -15,7 +15,7 @@ def read_requirements():
         return [line.strip() for line in f if line.strip() and not line.startswith("#")]
 
 setup(
-    name="coldstream",
+    name="pyColdStream",
     description="Python ColdStream REST API Wrapper",
     license="MIT License",
     version=version,
