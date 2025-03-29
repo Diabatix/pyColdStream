@@ -21,7 +21,7 @@ setup(
     version=version,
     author="Diabatix nv",
     keywords="diabatix coldstream python api wrapper",
-    packages=find_packages(include=["pycoldstream"]),
+    packages=find_packages(include=["coldstream"]),
     install_requires=read_requirements(),
     url="https://github.com/diabatix/pycoldstream",
     classifiers=[
