@@ -1,5 +1,5 @@
 from .coldstream import ColdstreamSession
 
-__all__ = {
+__all__ = [
         "ColdstreamSession"
-}
+]
