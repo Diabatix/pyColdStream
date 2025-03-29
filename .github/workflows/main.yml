@@ -1,4 +1,5 @@
 name: Sync to Public Repo
+
 on:
   push:
     branches:
@@ -37,7 +38,8 @@ jobs:
       id: get_commit_msg
       run: |
         LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
-        echo "last_commit_msg=$LAST_COMMIT_MSG" >> $GITHUB_ENV
+        CLEAN_COMMIT_MSG=$(echo "$LAST_COMMIT_MSG" | tr -d '\n')
+        echo "last_commit_msg=$CLEAN_COMMIT_MSG" >> $GITHUB_ENV
 
     - name: Clone Public Repo
       env:
