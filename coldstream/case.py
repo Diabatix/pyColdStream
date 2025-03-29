@@ -5,6 +5,7 @@
 #-------------------------------------------------------------------------------#
 
 import os
+import json
 import logging
 from .rest_api import ColdStreamDataObject, ApiError
 
@@ -109,7 +110,7 @@ class Case(ColdStreamDataObject):
     def create_region(self, name):
         url = self.URL["cases"] + "/regions"
         payload = {"name" : name, "caseId": self.ID}
-        Region(self.token, self.request_post(url, payload), self.ID)
+        return Region(self.token, self.request_post(url, payload), self.ID)
 
     ## Retrieves the region for the given region ID
     #
@@ -344,7 +345,6 @@ class Region(ColdStreamDataObject):
     # @param case_ID (int): the case ID
     def __init__(self, token, data, case_ID):
         super().__init__(token, data, "regions")
-
         self.__case_ID = case_ID
 
                  #--------------------- Methods -----------------#
@@ -358,8 +358,10 @@ class Region(ColdStreamDataObject):
     # @return (dict)
     def update(self, name, region_type, data=None):
         super().update({"name" : name,
-                      "type" : region_type,
-                      "data" : data if data is not None else {}})
+                      "RegionType" : region_type,
+                      "data" : json.dumps(data) if data is not None else "{}"
+                        })
+
 
     ## Create a new subregion for the given region
     #
@@ -370,6 +372,7 @@ class Region(ColdStreamDataObject):
     # @return (Subregion)
     def create_subregion(self, name):
         url = self.URL["cases"] + "/subregions"
+
         payload = {"name" : name,
                    "regionId" : self.ID,
                    "caseId": self.__case_ID}
@@ -438,7 +441,7 @@ class SubRegion(ColdStreamDataObject):
     # @param data (dict): case data
     # @param case_ID (int): the case ID
     def __init__(self, token, data, case_ID):
-        super().__init__(token, data, "cases")
+        super().__init__(token, data, "subregions")
 
         self.__case_ID = case_ID
 
@@ -454,7 +457,7 @@ class SubRegion(ColdStreamDataObject):
     def update(self, name, subregion_type, data=None):
         super().update({"name" : name,
                         "subregionType" : subregion_type,
-                        "data" : data if data is not None else {}})
+                        "data" : json.dumps(data) if data is not None else "{}"})
 
     ## Upload the component geometry file
     #
@@ -503,7 +506,7 @@ class Boundary(ColdStreamDataObject):
     def update(self, name, boundary_type, data=None):
         super().update({"name" : name,
                         "boundaryType" : boundary_type,
-                        "data" : data if data is not None else {}})
+                        "data" : json.dumps(data) if data is not None else "{}"})
 
     ## Upload the component geometry file
     #
@@ -552,7 +555,7 @@ class Interface(ColdStreamDataObject):
         payload = {"resetInterfaceSidesData": reset,
                    "firstRegionId": region1_ID,
                    "secondRegionId": region2_ID,
-                   "data":data if data is not None else {}}
+                   "data":json.dumps(data) if data is not None else "{}"}
         if interface_type is not None:
             payload["interfaceType"] = interface_type
 
@@ -661,7 +664,6 @@ class CaseValidationResult:
     #
     # @param data (dict): case data
     def __init__(self, data):
-        print(data)
         self.__data = data
 
                  #--------------------- Methods -----------------#
