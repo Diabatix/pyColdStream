@@ -18,6 +18,7 @@ log = logging.getLogger(__name__)
 ## Manage the user data
 class Case(ColdStreamDataObject):
 
+
                  #------------------- Attributes ----------------#
 
     CASE_TYPES = {"Custom design" : 0,
