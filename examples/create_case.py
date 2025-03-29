@@ -12,11 +12,21 @@ session = ColdstreamSession.create_from_login(user="maarten.haine@diabatix.com",
                                               password="msY#xJ!t#gig4heq",
                                               host="stage.helios")
 
-P = session.projects.get_project(1586)
+P = session.projects.get_project(1550)
 """C = P.create_case(case.Case.CASE_TYPES["Simulation"], "Demo2")
 """
 
-C = P.get_case(5441)
+C = P.get_case(5480)
+R = C.get_region(60481)
+B = R.get_boundary(60469)
+print(B)
+print('start')
+"""B.update("jeez", "heatedWall", {'properties': {'Q': 10, 'emissivity': 0.9, 'absorptivity': 0.9}})
+print(type(B))"""
+C.get_target(60469)
+print(B)
+
+"""
 R = C.create_region('region1')
 Region_id = R.ID
 print(R)
@@ -43,7 +53,7 @@ SR.update("heated_wall", "solid", data)
 print(SR)
 print("this error is not update")
 SR = R.get_subregion(SR_ID)
-print(SR)
+print(SR)"""
 
 
 """C = P.get_case(5436)
