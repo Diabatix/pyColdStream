@@ -7,7 +7,7 @@
 import os
 from setuptools import setup, find_packages
 
-with open(os.path.join("pycoldstream", "VERSION")) as file:
+with open(os.path.join("coldstream", "VERSION")) as file:
     version = file.read().strip()
 
 def read_requirements():
