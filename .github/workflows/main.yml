@@ -30,6 +30,10 @@ jobs:
       run: |
         git filter-repo --path .github/workflows --invert-paths --force
 
+    - name: Filter out examples folder
+      run: |
+        git filter-repo --path examples --invert-paths --force
+
     - name: Filter out tests folder
       run: |
         git filter-repo --path tests --invert-paths --force
