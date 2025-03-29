@@ -45,14 +45,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
-        git clone https://${{ secrets.PAT_TOKEN }}@github.com/Diabatix/pyColdStream.git public-repo
-        cd public-repo
+        git clone https://${{ secrets.PAT_TOKEN }}@github.com/Diabatix/pyColdStream.git .
         git checkout main
 
     - name: Sync to Public Repo
       run: |
-        rsync -av --exclude='.git' --exclude='.github/workflows' --exclude='tests' ./ public-repo/
-        cd public-repo
+        rsync -av --exclude='.git' --exclude='.github/workflows' --exclude='tests' ./ /tmp/public-repo/
+        cp -r /tmp/public-repo/* .
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
         git add .
