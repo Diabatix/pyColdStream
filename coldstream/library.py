@@ -5,7 +5,7 @@
 #-------------------------------------------------------------------------------#
 
 import logging
-from rest_api import ColdStreamRestClient, ColdStreamDataObject
+from .rest_api import ColdStreamRestClient, ColdStreamDataObject
 
 log = logging.getLogger(__name__)
 

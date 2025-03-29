@@ -57,6 +57,8 @@ class ColdStreamRestClient:
                 "cases"        : f"https://case.{_HOST}.diabatix.com",
                 "targets"      : f"https://case.{_HOST}.diabatix.com",
                 "organizations": f"https://case.{_HOST}.diabatix.com",
+                "regions"      : f"https://case.{_HOST}.diabatix.com",
+                "subregions"   : f"https://case.{_HOST}.diabatix.com",
                 "fileserver"   : f"https://fileserver.{_HOST}.diabatix.com"}
 
     ## @end_attributes
@@ -172,6 +174,7 @@ class ColdStreamRestClient:
     # @param url (str): the request url
     # @param payload (dict): the payload
     def request_put(self, url, payload):
+        print(payload)
         headers = {
             "accept": "application/json",
             "content-type": "application/*+json",
@@ -225,9 +228,7 @@ class ColdStreamRestClient:
             file_data = file.read()
 
         headers = {
-            "accept": "application/json",
-            "content-type": "application/*+json",
-            "Authorization": f"Bearer {self.token}"
+            "content-type": "application/octet-stream",
         }
         return self._response_handler(requests.put(
             presigned_url,
@@ -294,6 +295,8 @@ class ColdStreamDataObject(ColdStreamRestClient):
     #
     # @param payload (dict): the request payload
     def update(self, payload):
+        print(self.instance_url)
+        print(payload)
         self.__data = self.request_put(self.instance_url, payload)
 
     ## Create a signed url
