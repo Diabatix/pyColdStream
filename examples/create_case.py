@@ -7,9 +7,9 @@
 from coldstream import ColdstreamSession, case
 import os
 
-session = ColdstreamSession.create_from_login(user="maarten.haine@diabatix.com",
-                                              password="msY#xJ!t#gig4heq",
-                                              host="stage.helios")
+session = ColdstreamSession.create_from_login(user="admin@admin.com",
+                                              password="admin",
+                                              host="eu1")
 
 
 
