@@ -357,18 +357,14 @@ class Region(ColdStreamDataObject):
     #
     # @return (dict)
     def update(self, name, region_type, data=None):
-        current_region_id = self.ID
+        details = self.data
         super().update({"name": name,
                         "RegionType": region_type,
                         "data": json.dumps(data) if data is not None else "{}"
                         })
-
-        regions = self.data.get('regions', [])
-        for region in regions:
-            if region.get('id') == current_region_id:
-                self.data.clear()
-                self.data.update(region)
-                break
+        self.data.clear()
+        self.data.update(details)
+        self.data.update({"name": name})
 
 
     ## Create a new subregion for the given region
@@ -415,6 +411,7 @@ class Region(ColdStreamDataObject):
     def get_boundary(self, boundary_ID):
         url = self.URL["cases"] + "/boundaries/" + str(boundary_ID)
         return Boundary(self.token, self.request_get(url), self.__case_ID)
+
 
     ## Upload the component geometry file
     #
@@ -463,19 +460,13 @@ class SubRegion(ColdStreamDataObject):
     #
     # @return (dict)
     def update(self, name, subregion_type, data=None):
-        subregion_ID = self.ID
+        details = self.data
         super().update({"name" : name,
                         "subregionType" : subregion_type,
                         "data" : json.dumps(data) if data is not None else "{}"})
-        print(self.data)
-        regions = self.data.get('regions', [])
-        for region in regions:
-            subregions = region.get('subregions', [])
-            for subregion in subregions:
-                if subregion.get('id') == subregion_ID:
-                    self.data.clear()
-                    self.data.update(subregion)
-                    break
+        self.data.clear()
+        self.data.update(details)
+        self.data.update({"name": name})
 
     ## Upload the component geometry file
     #
@@ -522,18 +513,13 @@ class Boundary(ColdStreamDataObject):
     # @param boundary_type (str): the boundary type, options are 'fixedTemperatureWall', 'heatedWall', ...
     # @param data (dict, optional): all data concerning the region
     def update(self, name, boundary_type, data=None):
-        boundary_ID = self.ID
+        details = self.data
         super().update({"name" : name,
                         "boundaryType" : boundary_type,
                         "data" : json.dumps(data) if data is not None else "{}"})
-        regions = self.data.get('regions', [])
-        for region in regions:
-            boundaries = region.get('boundaries', [])
-            for boundary in boundaries:
-                if boundary.get('id') == boundary_ID:
-                    self.data.clear()
-                    self.data.update(boundary)
-                    break
+        self.data.clear()
+        self.data.update(details)
+        self.data.update({"name": name})
 
     ## Upload the component geometry file
     #
@@ -579,14 +565,20 @@ class Interface(ColdStreamDataObject):
     # @param interface_type (str): type you want the updated interface to have
     # @param data (dict): interface data
     def update(self, region1_ID, region2_ID, reset, interface_type=None, data=None):
+        interface_ID = self.ID
         payload = {"resetInterfaceSidesData": reset,
                    "firstRegionId": region1_ID,
                    "secondRegionId": region2_ID,
                    "data":json.dumps(data) if data is not None else "{}"}
         if interface_type is not None:
             payload["interfaceType"] = interface_type
-
         super().update(payload)
+        interfaces = self.data.get("interfaces", [])
+        for interface in interfaces:
+            if interface["id"] == interface_ID:
+                self.data.clear()
+                self.data.update(interface)
+                break
 
 #-------------------------------------------------------------------------------#
                  #-----------------------------------------------#
@@ -618,9 +610,12 @@ class Target(ColdStreamDataObject):
     # @param target_type (str): the target type
     # @param data (dict, optional): all data concerning the target
     def update(self, name, target_type, data=None):
+        details = self.data
         super().update({"targetType" : target_type,
-                        "data" : data if data is not None else {}})
-
+                        "data" : json.dumps(data) if data is not None else '{}'})
+        self.data.clear()
+        self.data.update(details)
+        self.data.update({"name": name})
 
 
 #-------------------------------------------------------------------------------#
