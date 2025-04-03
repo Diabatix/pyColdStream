@@ -175,12 +175,12 @@ class ColdStreamRestClient:
     # @param url (str): the request url
     # @param payload (dict): the payload
     def request_put(self, url, payload):
-        print(payload)
         headers = {
             "accept": "application/json",
             "content-type": "application/*+json",
             "Authorization": f"Bearer {self.token}"
         }
+
         raw_payload = json.dumps(payload)
         return self._response_handler(requests.put(
             url,
@@ -296,7 +296,6 @@ class ColdStreamDataObject(ColdStreamRestClient):
     #
     # @param payload (dict): the request payload
     def update(self, payload):
-
         self.__data = self.request_put(self.instance_url, payload)
 
     ## Create a signed url
