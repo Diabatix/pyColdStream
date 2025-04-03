@@ -60,6 +60,7 @@ class ColdStreamRestClient:
                 "regions"      : f"https://case.{_HOST}.diabatix.com",
                 "subregions"   : f"https://case.{_HOST}.diabatix.com",
                 "boundaries"   : f"https://case.{_HOST}.diabatix.com",
+                "interfaces": f"https://case.{_HOST}.diabatix.com",
                 "fileserver"   : f"https://fileserver.{_HOST}.diabatix.com"}
 
     ## @end_attributes
