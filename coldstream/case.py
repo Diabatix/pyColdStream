@@ -565,14 +565,20 @@ class Interface(ColdStreamDataObject):
     # @param interface_type (str): type you want the updated interface to have
     # @param data (dict): interface data
     def update(self, region1_ID, region2_ID, reset, interface_type=None, data=None):
+        interface_ID = self.ID
         payload = {"resetInterfaceSidesData": reset,
                    "firstRegionId": region1_ID,
                    "secondRegionId": region2_ID,
                    "data":json.dumps(data) if data is not None else "{}"}
         if interface_type is not None:
             payload["interfaceType"] = interface_type
-
         super().update(payload)
+        interfaces = self.data.get("interfaces", [])
+        for interface in interfaces:
+            if interface["id"] == interface_ID:
+                self.data.clear()
+                self.data.update(interface)
+                break
 
 #-------------------------------------------------------------------------------#
                  #-----------------------------------------------#
@@ -606,7 +612,7 @@ class Target(ColdStreamDataObject):
     def update(self, name, target_type, data=None):
         details = self.data
         super().update({"targetType" : target_type,
-                        "data" : data if data is not None else {}})
+                        "data" : json.dumps(data) if data is not None else '{}'})
         self.data.clear()
         self.data.update(details)
         self.data.update({"name": name})
