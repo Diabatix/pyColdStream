@@ -15,9 +15,9 @@ import os
 
 def create_session():
     """Create and return a ColdStream session."""
-    return ColdstreamSession.create_from_login(user="maarten.haine@diabatix.com",
-                                               password="msY#xJ!t#gig4heq",
-                                               host="stage.helios")
+    return ColdstreamSession.create_from_login(user="admin@admin.com",
+                                               password="admin",
+                                               host="eu1")
 
 
 def create_project_and_case(session):
