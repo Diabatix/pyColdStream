@@ -26,9 +26,9 @@ jobs:
       run: |
         pip install git-filter-repo
 
-    - name: Filter out .github/workflows folder
-      run: |
-        git filter-repo --path .github/workflows --invert-paths --force
+    #- name: Filter out .github/workflows folder
+    #  run: |
+    #   git filter-repo --path .github/workflows --invert-paths --force
 
     - name: Filter out tests folder
       run: |
