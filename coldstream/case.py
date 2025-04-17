@@ -125,9 +125,11 @@ class Case(ColdStreamDataObject):
     #
     # @param component_ID (int): id of the component for which you want to create a target
     def create_target(self, component_ID):
-        url = self.URL["cases"] + "/targets"
+        url = self.URL["targets"] + "/targets"
         payload = {"caseId" : self.ID, "caseComponentId" : component_ID}
-        return Target(self.token, self.request_post(url, payload))
+
+        t = Target(self.token, self.request_post(url, payload))
+        return t
 
     ## Retrieves the target for the given target ID
     #
@@ -135,7 +137,7 @@ class Case(ColdStreamDataObject):
     #
     # @return (Target)
     def get_target(self, target_ID):
-        url = self.URL["cases"] + "/targets/" + str(target_ID)
+        url = self.URL["targets"] + "/targets/" + str(target_ID)
         return Target(self.token, self.request_get(url))
 
     ## Create a new interface between two regions
@@ -601,7 +603,8 @@ class Target(ColdStreamDataObject):
     # @param token (str): the api token
     # @param data (dict): case data
     def __init__(self, token, data):
-        super().__init__(token, data, "cases")
+        super().__init__(token, data, "targets")
+
 
                  #--------------------- Methods -----------------#
 
@@ -609,13 +612,12 @@ class Target(ColdStreamDataObject):
     #
     # @param target_type (str): the target type
     # @param data (dict, optional): all data concerning the target
-    def update(self, name, target_type, data=None):
+    def update(self, target_type, data=None):
         details = self.data
         super().update({"targetType" : target_type,
                         "data" : json.dumps(data) if data is not None else '{}'})
-        self.data.clear()
-        self.data.update(details)
-        self.data.update({"name": name})
+        self.data = details
+
 
 
 #-------------------------------------------------------------------------------#
