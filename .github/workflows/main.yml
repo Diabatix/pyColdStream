@@ -34,6 +34,10 @@ jobs:
       run: |
         git filter-repo --path tests --invert-paths --force
 
+    - name: Filter out private folder
+      run: |
+        git filter-repo --path private --invert-paths --force
+
     - name: Get Last Commit Message
       id: get_commit_msg
       run: |
