@@ -296,7 +296,7 @@ class Case(ColdStreamDataObject):
     ## Retrieves a download link for the given file.
     #
     # @param file_ID (int): id of the file you want a download link for
-    # @param name (str): name of the file you want a download link for
+    # @param key (str): name of the file you want a download link for
     def get_file_download_link(self, file_ID=None, key=None):
         if file_ID is None and key is None:
             raise ApiError("file_ID and key cannot be simultaneously None")
@@ -309,6 +309,38 @@ class Case(ColdStreamDataObject):
             url += key
 
         return self.request_get(url)
+
+    ## Returns a list of links for setup files
+    #
+    ## @return (list of dict)
+    def get_setup_file_links(self):
+        url = self.URL["fileserver"] + "/cases/" + str(self.ID) + "/files"
+        return self.request_get(url)
+
+    ## Duplicate the case
+    #
+    ## @param case_ID (int): the case ID
+    ## @param name (str): the new case name
+    ## @return (Case)
+    def duplicate_case(self, name):
+        url = self.URL["cases"] + "/cases/duplicate"
+        print(self.ID)
+        payload = {"caseId": self.ID,
+                   "caseName": name,
+                   "linkCopy": True,
+                   "ImproveDesignIteration": 0}
+        return Case(self.token, self.request_post(url, payload), self.__user)
+
+    ## Move the case to another project
+    #
+    ## @param project_ID (int): the ID of the project you want to move the case to
+    ## @return (Case)
+    def move_case(self, projectID):
+        url = self.URL["cases"] + "/cases/move"
+        payload = {"caseId": self.ID,
+                   "projectId": projectID}
+        return Case(self.token, self.request_post(url, payload), self.__user)
+
 
 #-------------------------------------------------------------------------------#
 

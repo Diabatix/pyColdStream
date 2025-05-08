@@ -70,8 +70,8 @@ def main():
     session = create_session()
 
     # ---------------- RETRIEVING PROJECT AND CASE ---------------- #
-    project_id = 1550
-    case_id = 5429
+    project_id = 1550 # Example project ID
+    case_id = 5429 # Example case ID
     print(f'Retrieving project ID {project_id} and case ID {case_id}...')
     project, case = get_project_and_case(session, project_id, case_id)
     print('Project and case retrieved successfully')
