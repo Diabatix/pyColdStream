@@ -335,7 +335,8 @@ class Case(ColdStreamDataObject):
     #
     ## @param project_ID (int): the ID of the project you want to move the case to
     ## @return (Case)
-    def move_case(self, projectID):
+    def move_case(self, project_ID):
+    Currently doesn't follow the coding style guid, also needs to be adjusted within the function
         url = self.URL["cases"] + "/cases/move"
         payload = {"caseId": self.ID,
                    "projectId": projectID}
