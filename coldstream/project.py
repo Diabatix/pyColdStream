@@ -112,9 +112,9 @@ class Project(ColdStreamDataObject):
     ## Return the project cases
     @property
     def cases(self):
-        url = self.URL["cases"] + "/organizations/" + str(self.__user.organization.ID) + "/cases"
+        url = self.URL["cases"] + "/projects/" + str(self.ID) + "/cases"
         data = self.request_get(url)
-        all_cases = [Case(self.token, d) for d in data["items"]]
+        all_cases = [Case(self.token, d, self.__user) for d in data["items"]]
         return [c for c in all_cases if c.project_ID == self.ID]
 
     ## @end_attributes
