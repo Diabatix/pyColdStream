@@ -32,7 +32,7 @@ def create_project_and_case(session):
 # ======================= OPTION 1: COMPOUND GEOMETRY ======================= #
 """
 Option 1: Upload a compound STEP file with all regions, subregions and boundaries 
-pre-defined in a single file..
+pre-defined in a single file.
 """
 
 
