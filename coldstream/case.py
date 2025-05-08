@@ -295,7 +295,7 @@ class Case(ColdStreamDataObject):
 
     ## Retrieves a download link for the given file.
     #
-    # @param file_ID (int): id of the file you want a download link for
+    # @param file_ID (int, optional): id of the file you want a download link for, None by default
     # @param key (str, optional): name of the file you want a download link for, None by default
     def get_file_download_link(self, file_ID=None, key=None):
         if file_ID is None and key is None:
