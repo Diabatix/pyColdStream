@@ -264,6 +264,10 @@ class ColdStreamDataObject(ColdStreamRestClient):
     def data(self):
         return self.__data
 
+    @data.setter
+    def data(self, data):
+        self.__data = data
+
 	## Return the instance url
     @property
     def instance_url(self):

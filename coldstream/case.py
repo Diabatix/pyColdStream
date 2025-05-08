@@ -125,9 +125,11 @@ class Case(ColdStreamDataObject):
     #
     # @param component_ID (int): id of the component for which you want to create a target
     def create_target(self, component_ID):
-        url = self.URL["cases"] + "/targets"
+        url = self.URL["targets"] + "/targets"
         payload = {"caseId" : self.ID, "caseComponentId" : component_ID}
-        return Target(self.token, self.request_post(url, payload))
+
+        t = Target(self.token, self.request_post(url, payload))
+        return t
 
     ## Retrieves the target for the given target ID
     #
@@ -135,7 +137,7 @@ class Case(ColdStreamDataObject):
     #
     # @return (Target)
     def get_target(self, target_ID):
-        url = self.URL["cases"] + "/targets/" + str(target_ID)
+        url = self.URL["targets"] + "/targets/" + str(target_ID)
         return Target(self.token, self.request_get(url))
 
     ## Create a new interface between two regions
@@ -293,8 +295,8 @@ class Case(ColdStreamDataObject):
 
     ## Retrieves a download link for the given file.
     #
-    # @param file_ID (int): id of the file you want a download link for
-    # @param name (str): name of the file you want a download link for
+    # @param file_ID (int, optional): id of the file you want a download link for, None by default
+    # @param key (str, optional): name of the file you want a download link for, None by default
     def get_file_download_link(self, file_ID=None, key=None):
         if file_ID is None and key is None:
             raise ApiError("file_ID and key cannot be simultaneously None")
@@ -307,6 +309,37 @@ class Case(ColdStreamDataObject):
             url += key
 
         return self.request_get(url)
+
+    ## Returns a list of links for setup files
+    #
+    ## @return (list of dict)
+    def get_setup_file_links(self):
+        url = self.URL["fileserver"] + "/cases/" + str(self.ID) + "/files"
+        return self.request_get(url)
+
+    ## Duplicate the case
+    #
+    ## @param name (str): the new case name
+    ## @return (Case)
+    def duplicate_case(self, name):
+        url = self.URL["cases"] + "/cases/duplicate"
+
+        payload = {"caseId": self.ID,
+                   "caseName": name,
+                   "linkCopy": True,
+                   "ImproveDesignIteration": 0}
+        return Case(self.token, self.request_post(url, payload), self.__user)
+
+    ## Move the case to another project
+    #
+    ## @param project_ID (int): the ID of the project you want to move the case to
+    ## @return (Case)
+    def move_case(self, project_ID):
+        url = self.URL["cases"] + "/cases/move"
+        payload = {"caseId": self.ID,
+                   "projectId": project_ID}
+        return Case(self.token, self.request_post(url, payload), self.__user)
+
 
 #-------------------------------------------------------------------------------#
 
@@ -601,7 +634,8 @@ class Target(ColdStreamDataObject):
     # @param token (str): the api token
     # @param data (dict): case data
     def __init__(self, token, data):
-        super().__init__(token, data, "cases")
+        super().__init__(token, data, "targets")
+
 
                  #--------------------- Methods -----------------#
 
@@ -609,13 +643,12 @@ class Target(ColdStreamDataObject):
     #
     # @param target_type (str): the target type
     # @param data (dict, optional): all data concerning the target
-    def update(self, name, target_type, data=None):
+    def update(self, target_type, data=None):
         details = self.data
         super().update({"targetType" : target_type,
                         "data" : json.dumps(data) if data is not None else '{}'})
-        self.data.clear()
-        self.data.update(details)
-        self.data.update({"name": name})
+        self.data = details
+
 
 
 #-------------------------------------------------------------------------------#
