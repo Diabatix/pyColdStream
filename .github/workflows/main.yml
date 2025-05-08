@@ -54,5 +54,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
-        git remote add public-repo https://${{ secrets.PAT_TOKEN }}@github.com/Diabatix/pyColdStream.git
-        git push public-repo HEAD:main --force
+        git remote set-url origin https://${{ secrets.PAT_TOKEN }}@github.com/Diabatix/pyColdStream.git
+        git push origin HEAD:main --force
