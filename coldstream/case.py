@@ -319,12 +319,11 @@ class Case(ColdStreamDataObject):
 
     ## Duplicate the case
     #
-    ## @param case_ID (int): the case ID
     ## @param name (str): the new case name
     ## @return (Case)
     def duplicate_case(self, name):
         url = self.URL["cases"] + "/cases/duplicate"
-        print(self.ID)
+
         payload = {"caseId": self.ID,
                    "caseName": name,
                    "linkCopy": True,
@@ -336,10 +335,9 @@ class Case(ColdStreamDataObject):
     ## @param project_ID (int): the ID of the project you want to move the case to
     ## @return (Case)
     def move_case(self, project_ID):
-    Currently doesn't follow the coding style guid, also needs to be adjusted within the function
         url = self.URL["cases"] + "/cases/move"
         payload = {"caseId": self.ID,
-                   "projectId": projectID}
+                   "projectId": project_ID}
         return Case(self.token, self.request_post(url, payload), self.__user)
 
 

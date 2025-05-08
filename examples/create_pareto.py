@@ -8,7 +8,7 @@
 # -------------------------------------------------------------------------------#
 
 import matplotlib.pyplot as plt
-from pycoldstreamv0_3.coldstream import ColdstreamSession
+from coldstream import ColdstreamSession
 
 
 def create_session():
